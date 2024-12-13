@@ -1,0 +1,39 @@
+{
+  "postcards": [
+    {
+      "id": 1,
+      "style": "green",
+      "imgPath": "images/postcard-green-dark.png",
+      "text": "Фон 1",
+      "imgBase64Path": "images/postcard-green-dark.txt"
+    },
+    {
+      "id": 2,
+      "style": "purple",
+      "imgPath": "images/postcard-purple.png",
+      "text": "Фон 2",
+      "imgBase64Path": "images/postcard-purple-base64.txt"
+    },
+    {
+      "id": 3,
+      "style": "blue",
+      "imgPath": "images/postcard-blue.png",
+      "text": "Фон 3",
+      "imgBase64Path": "images/postcard-blue-base64.txt"
+    },
+    {
+      "id": 4,
+      "style": "beige",
+      "imgPath": "images/postcard-homes.jpg",
+      "text": "Фон 3",
+      "imgBase64Path": "images/postcard-homes-base64.txt"
+    },
+    {
+      "id": 5,
+      "style": "red",
+      "imgPath": "images/postcard-red.jpg",
+      "text": "Фон 5",
+      "imgBase64Path": "images/postcard-red-base64.txt"
+    }
+  ]
+}
