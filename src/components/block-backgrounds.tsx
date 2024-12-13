@@ -30,7 +30,7 @@ export function BlockBackgrounds({
               'card-label',
               card.id === activeCardId && '_active'
             )}
-            onClick={(e) => {
+            onClick={() => {
               setActiveCardId(card.id)
             }}
             key={card.id}

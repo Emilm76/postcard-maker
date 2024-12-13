@@ -26,15 +26,13 @@ export function ResultModal({
   const [logoContent, setLogoContent] = useState<
     [string, number, number] | null
   >(null)
-  const [logoSrc, setLogoSrc] = useState<[string, number, number] | null>(null)
+  const [logoSrc, setLogoSrc] = useState<[any, number, number] | null>(null)
   const [formatTel, setFormatTel] = useState<string | null>(null)
-  const [currentPositions, setCurrentPositions] = useState<string | null>(null)
-  const [currentPositionsPDF, setCurrentPositionsPDF] = useState<string | null>(
-    null
-  )
+  const [currentPositions, setCurrentPositions] = useState<any>(null)
+  const [currentPositionsPDF, setCurrentPositionsPDF] = useState<any>(null)
   const cardRef = useRef(null)
 
-  const positions = {
+  const positions: any = {
     green: {
       logo: { top: '70px', left: '50%', color: '#fff' },
       title: { top: '420px', left: '50%', color: '#fff' },
@@ -71,7 +69,7 @@ export function ResultModal({
       social: { right: '40px', bottom: '33px' },
     },
   }
-  const positionsPDF = {
+  const positionsPDF: any = {
     green: {
       logo: { y: 70, x: 0, color: '#fff' },
       title: { y: 470, x: 300, color: '#fff' }, // y + 50
@@ -191,7 +189,7 @@ export function ResultModal({
 
     doc.setFont('AttackType')
     doc.setFontSize(62)
-    doc.setTextColor(currentPositionsPDF.title.color)
+    doc.setTextColor(currentPositionsPDF?.title.color)
     doc.text(
       template.title,
       currentPositionsPDF.title.x,
@@ -248,12 +246,13 @@ export function ResultModal({
 
     // Логотип
     if (logoContent) {
-      var svg = document.querySelector('#logo-svg').innerHTML
+      var svg = document.querySelector('#logo-svg')?.innerHTML
       if (svg) svg = svg.replace(/\r?\n|\r/g, '').trim()
       var canvas = document.createElement('canvas')
       var context = canvas.getContext('2d')
 
-      context.clearRect(0, 0, canvas.width, canvas.height)
+      context?.clearRect(0, 0, canvas.width, canvas.height)
+      // @ts-ignore
       canvg(canvas, svg)
 
       var imgData = canvas.toDataURL('image/png')
