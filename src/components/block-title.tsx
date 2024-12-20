@@ -15,7 +15,7 @@ export function BlockHeader({
   return (
     <Block info="Блок 1" title="Заголовок">
       <div className="text-info text-myPurple mb-[10px]">
-        Максимальное кол-во символов - 25
+        Максимальное кол-во символов - 30
       </div>
       <TextField
         error={showError && 'Заполните это поле'}
@@ -23,7 +23,7 @@ export function BlockHeader({
           id: 'input-title',
           type: 'text',
           placeholder: 'Введите заголовок поздравления...',
-          maxLength: 25,
+          maxLength: 30,
           onInput: (e) => {
             const target = e.target as HTMLTextAreaElement
             setValue(target.value)

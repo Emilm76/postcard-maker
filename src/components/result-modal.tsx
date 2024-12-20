@@ -30,6 +30,7 @@ export function ResultModal({
   const [formatTel, setFormatTel] = useState<string | null>(null)
   const [currentPositions, setCurrentPositions] = useState<any>(null)
   const [currentPositionsPDF, setCurrentPositionsPDF] = useState<any>(null)
+  const [isError, setIsError] = useState<boolean>(false)
   const cardRef = useRef(null)
 
   const positions: any = {
@@ -113,6 +114,13 @@ export function ResultModal({
   useEffect(() => {
     setFormatTel(formatPhoneNumber(template.tel))
   })
+
+  function isPopularBrowser() {
+    const userAgent = navigator.userAgent
+    console.log(userAgent)
+
+    return /Chrome|Safari|Firefox|Edg/.test(userAgent)
+  }
 
   useEffect(() => {
     async function loadFonts() {
@@ -277,7 +285,16 @@ export function ResultModal({
       )
     }
 
-    doc.save('Новогодняя открытка от команды Pixel².pdf')
+    if (isPopularBrowser()) {
+      doc.save('Новогодняя открытка от команды Pixel².pdf')
+    } else {
+      doc.output('blob')
+      const blob = doc.output('blob')
+      const url = URL.createObjectURL(blob)
+      window.open(url)
+
+      setIsError(true)
+    }
   }
 
   useEffect(() => {
@@ -376,83 +393,92 @@ export function ResultModal({
       {isLoading ? (
         <LoadingIcon className="w-[100px] h-[100px] mx-auto mt-5 text-myPurple lg:mt-10" />
       ) : (
-        <>
-          <div
-            className="card-preview w-[595px] mx-auto rounded-mySm overflow-hidden mb-10"
-            ref={cardRef}
-          >
-            <div className="relative">
-              <img src={currentPostcard.imgPath} alt="Postcard background" />
+        <div className="inline-block w-full">
+          <div className="card-preview-parent">
+            <div
+              className="card-preview origin-top-left w-[595px] mx-auto rounded-mySm overflow-hidden mb-10"
+              ref={cardRef}
+            >
+              <div className="relative">
+                <img src={currentPostcard.imgPath} alt="Postcard background" />
 
-              <div
-                style={currentPositions.logo}
-                className="absolute -translate-x-1/2 h-[17px]"
-              >
-                {logoContent && (
-                  <div
-                    id="logo-svg"
-                    dangerouslySetInnerHTML={{ __html: logoContent[0] }}
-                    className="max-h-full"
-                  />
-                )}
-                {logoSrc && <img className="max-h-full" src={logoSrc[0]} />}
-              </div>
+                <div
+                  style={currentPositions.logo}
+                  className="absolute -translate-x-1/2 h-[17px]"
+                >
+                  {logoContent && (
+                    <div
+                      id="logo-svg"
+                      dangerouslySetInnerHTML={{ __html: logoContent[0] }}
+                      className="max-h-full"
+                    />
+                  )}
+                  {logoSrc && <img className="max-h-full" src={logoSrc[0]} />}
+                </div>
 
-              <div
-                style={currentPositions.title}
-                className="h-postcard absolute leading-[1.2] -translate-x-1/2 text-center w-[240px] lg:w-[400px] whitespace-pre-wrap"
-              >
-                {template.title}
-              </div>
+                <div
+                  style={currentPositions.title}
+                  className="h-postcard absolute leading-[1.2] -translate-x-1/2 text-center w-[240px] lg:w-[400px] whitespace-pre-wrap"
+                >
+                  {template.title}
+                </div>
 
-              <div
-                style={currentPositions.text}
-                className="text-second absolute leading-[1.15] -translate-x-1/2 text-center w-[240px] lg:w-[435px] whitespace-pre-wrap"
-              >
-                {template.text}
-              </div>
+                <div
+                  style={currentPositions.text}
+                  className="text-second absolute leading-[1.15] -translate-x-1/2 text-center w-[240px] lg:w-[435px] whitespace-pre-wrap"
+                >
+                  {template.text}
+                </div>
 
-              <div
-                style={currentPositions.contacts}
-                className="flex flex-col gap-[5px] absolute text-second"
-              >
-                {template.tel && (
-                  <a
-                    className="text-[18px] leading-[1.16]"
-                    href={`tel:${formatTel}`}
-                  >
-                    {template.tel}
-                  </a>
-                )}
-                {template.site && (
-                  <a
-                    className="text-[18px] leading-[1.16]"
-                    href={template.site}
-                  >
-                    {template.site}
-                  </a>
-                )}
-              </div>
+                <div
+                  style={currentPositions.contacts}
+                  className="flex flex-col gap-[5px] absolute text-second"
+                >
+                  {template.tel && (
+                    <a
+                      className="text-[18px] leading-[1.16]"
+                      href={`tel:${formatTel}`}
+                    >
+                      {template.tel}
+                    </a>
+                  )}
+                  {template.site && (
+                    <a
+                      className="text-[18px] leading-[1.16]"
+                      href={template.site}
+                    >
+                      {template.site}
+                    </a>
+                  )}
+                </div>
 
-              <div
-                style={currentPositions.social}
-                className="flex gap-[10px] absolute"
-              >
-                {template.telegram && (
-                  <a href={template.telegram}>
-                    <img src="images/icons/telegram-white-black.png" />
-                  </a>
-                )}
-                {template.whatsapp && (
-                  <a href={template.whatsapp}>
-                    <img src="images/icons/whatsapp-white-black.png" />
-                  </a>
-                )}
+                <div
+                  style={currentPositions.social}
+                  className="flex gap-[10px] absolute"
+                >
+                  {template.telegram && (
+                    <a href={template.telegram}>
+                      <img src="images/icons/telegram-white-black.png" />
+                    </a>
+                  )}
+                  {template.whatsapp && (
+                    <a href={template.whatsapp}>
+                      <img src="images/icons/whatsapp-white-black.png" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </div>
+
           <DownloadButton onClick={generatePdf} />
-        </>
+          {isError && (
+            <div className="mt-4 text-info text-rose-400">
+              Если скачивание не началось - попробуйте открыть сайт в другом
+              браузере
+            </div>
+          )}
+        </div>
       )}
     </Modal>
   )
